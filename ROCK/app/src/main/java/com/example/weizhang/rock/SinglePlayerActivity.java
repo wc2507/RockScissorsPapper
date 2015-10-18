@@ -2,15 +2,31 @@ package com.example.weizhang.rock;
 
 import android.app.Activity;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import java.util.Timer;
+
+import java.util.TimerTask;
+import java.util.concurrent.Delayed;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class SinglePlayerActivity extends Activity implements View.OnClickListener{
+    private ImageView aiFace;
+    private ImageView myFace;
+    MediaPlayer bgm;
+    @Override
+    protected void onPause(){
+        super.onPause();
+        bgm.release();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,14 +35,16 @@ public class SinglePlayerActivity extends Activity implements View.OnClickListen
         View ppB = findViewById(R.id.ppB );
         View prB = findViewById(R.id.prB);
         View psB = findViewById(R.id.psB);
+        aiFace = (ImageView) findViewById(R.id.profileAI);
+        myFace = (ImageView) findViewById(R.id.profileUser);
         View exitGame = findViewById(R.id.exitGame);
         ppB.setOnClickListener(this);
         prB.setOnClickListener(this);
         psB.setOnClickListener(this);
         exitGame.setOnClickListener(this);
-
+        bgm = MediaPlayer.create(SinglePlayerActivity.this,R.raw.xiuluojie);
+        bgm.start();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -51,6 +69,8 @@ public class SinglePlayerActivity extends Activity implements View.OnClickListen
     @Override
     public void onClick(View v){
         final ImageView myImage = (ImageView) findViewById(R.id.imageViewUser);
+        aiFace.setImageResource(R.drawable.ali_normal);
+        myFace.setImageResource(R.drawable.me_normal);
         int gameindex = 0;
         switch(v.getId()){
             case R.id.prB:
@@ -78,8 +98,17 @@ public class SinglePlayerActivity extends Activity implements View.OnClickListen
                 ((AnimationDrawable) myImage.getBackground()).start();
             }
         });
+        final int aiResult = ai();
+        final int myResult = gameindex;
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                play(aiResult,myResult);
+            }
+        },1000);
+       // play(ai(), gameindex);
 
-        play(ai(), gameindex);
 
     }
 
@@ -115,13 +144,19 @@ public class SinglePlayerActivity extends Activity implements View.OnClickListen
         TextView result = (TextView) findViewById(R.id.textView);
         if(comp == user){
             result.setText("It's a Tie");
+            aiFace.setImageResource(R.drawable.ali_normal);
+            myFace.setImageResource(R.drawable.me_normal);
         }else if (comp==0&&user==2 ||
                   comp==2&&user==1 ||
                  comp==1&&user==0){
             result.setText("You Lose");
+            aiFace.setImageResource(R.drawable.ali_happy);
+            myFace.setImageResource(R.drawable.me_angry);
 
         }else {
             result.setText("You Win");
+            aiFace.setImageResource(R.drawable.ali_cry);
+            myFace.setImageResource(R.drawable.me_happy);
         }
         ;
 
