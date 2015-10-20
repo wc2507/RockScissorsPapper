@@ -11,11 +11,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#FF0000"
+        android:textSize="30dp"
         android:id="@+id/textView"
-        android:layout_alignBottom="@+id/imageViewAI"
-        android:layout_toEndOf="@+id/imageViewAI"
-        android:layout_above="@+id/profileUser"
-        android:layout_alignStart="@+id/imageViewUser" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:layout_width="50dp"
@@ -92,6 +92,21 @@
         android:layout_below="@+id/psB"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggleButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toggleButton"
+        android:layout_alignParentEnd="true"
+        android:text="Two Player Mode"
+        android:textColor="#000000" />
 
 
 </RelativeLayout>
